@@ -4,7 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/plumber.iml" filepath="$PROJECT_DIR$/.idea/modules/plumber.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/plumber-build.iml" filepath="$PROJECT_DIR$/.idea/modules/plumber-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plumber-config/plumber-config.iml" filepath="$PROJECT_DIR$/plumber-config/plumber-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plumber-config.iml" filepath="$PROJECT_DIR$/.idea/modules/plumber-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plumber-config-build.iml" filepath="$PROJECT_DIR$/.idea/modules/plumber-config-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/plumber-core.iml" filepath="$PROJECT_DIR$/.idea/modules/plumber-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/plumber-core-build.iml" filepath="$PROJECT_DIR$/.idea/modules/plumber-core-build.iml" />
     </modules>

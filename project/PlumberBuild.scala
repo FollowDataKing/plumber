@@ -22,8 +22,8 @@ object PlumberBuild extends Build {
   lazy val config = Project(id = "plumber-config", base = file("./plumber-config")).
     settings(commonSettings: _*).
     settings(
-      name := "plumber-config"
-//      libraryDependencies ++= coreDependencies,
+      name := "plumber-config",
+      libraryDependencies ++= confDependencies
     )
 
   lazy val core = Project(id = "plumber-core", base = file("./plumber-core")).
