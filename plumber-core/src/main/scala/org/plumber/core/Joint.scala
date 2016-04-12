@@ -9,5 +9,5 @@ import scala.reflect.runtime.universe._
  * Created by baihe on 16/4/11.
  */
 trait Joint {
-  def split[T](params: String*)(implicit tt: TypeTag[T]) : Iterable[DStream[T]]
+  def fork[T](params: String*)(implicit tt: TypeTag[T]) : Iterable[DStream[T]]
 }
