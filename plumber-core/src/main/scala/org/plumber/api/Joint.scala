@@ -1,4 +1,4 @@
-package org.plumber.core
+package org.plumber.api
 
 import org.apache.spark.streaming.dstream.DStream
 
