@@ -15,6 +15,7 @@ object Dependencies {
   val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
   val sparkStreaming = "org.apache.spark" %% "spark-streaming" % sparkVersion
   val sparkKafka = "org.apache.spark" %% "spark-streaming-kafka" % sparkVersion
+  val sparkTwitter = "org.apache.spark" %% "spark-streaming-twitter" % sparkVersion
   val sparkHive = "org.apache.spark" % "spark-hive_2.10" % sparkVersion
 
   val tsConfig = "com.typesafe" % "config" % tsConfigVersion
@@ -30,6 +31,7 @@ object Dependencies {
   val coreDependencies = Seq(
     sparkStreaming % Provided,
     sparkHive % Provided,
+    sparkTwitter % Provided,
     sparkKafka
   )
 
