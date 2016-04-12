@@ -23,6 +23,10 @@ object Dependencies {
     sparkCore
   )
 
+  val runtimeDependencies = Seq(
+
+  )
+
   val coreDependencies = Seq(
     sparkStreaming % Provided,
     sparkHive % Provided,
