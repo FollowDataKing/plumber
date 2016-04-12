@@ -1,18 +1,17 @@
 package org.plumber
 
-import java.io.File
+import org.plumber.conf.PlumberConf
 
-import com.typesafe.config.ConfigFactory
 
 /**
  * Created by baihe on 16/4/11.
  */
 object PlumberApp extends App {
 
-  val plumberConf = ConfigFactory.parseFile(new File("/Users/admin/fuck.conf"))
+  val confVal = PlumberConf.init().getString("org.plumber.aa")
+  val confDefaultVal = PlumberConf.init().load("/Users/admin/fuck.conf").getString("org.plumber.aa")
 
-  val projName = plumberConf.getString("org.plumber.aa")
-
-  println(projName)
+  println(confVal)
+  println(confDefaultVal)
 
 }

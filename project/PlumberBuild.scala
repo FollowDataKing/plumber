@@ -34,7 +34,8 @@ object PlumberBuild extends Build {
     )
 
   lazy val plumber = Project(id = "plumber", base = file(".")).
-    aggregate(core).
+    dependsOn(config, core).
+    aggregate(config, core).
     settings(
       name := "plumber",
       libraryDependencies ++= plumberDependencies
