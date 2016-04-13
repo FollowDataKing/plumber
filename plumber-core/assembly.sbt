@@ -3,7 +3,8 @@
  */
 
 assemblyMergeStrategy in assembly := {
-  // Resolve the duplicated UnusedStubClass
-  case PathList("org", "apache", "spark", "unused", xs@_*) => MergeStrategy.first
+  case PathList("org", "apache", xs@_*) => MergeStrategy.first
+  case PathList("com", "google", xs@_*) => MergeStrategy.first
+  case PathList("com", "esotericsoftware", "minlog", xs@_*) => MergeStrategy.first
   case x => (assemblyMergeStrategy in assembly).value(x)
 }

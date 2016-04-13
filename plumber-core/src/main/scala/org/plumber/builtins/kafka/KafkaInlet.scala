@@ -2,41 +2,41 @@ package org.plumber.builtins.kafka
 
 import kafka.serializer.{DefaultDecoder, StringDecoder}
 import org.apache.spark.Logging
+import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.plumber.PlumberContext
-import org.plumber.PlumberContext._
 import org.plumber.api.Inlet
+import org.plumber.conf.PlumberConf
+
+import scala.collection.JavaConverters._
 
 /**
  * Created by baihe on 16/4/12.
  */
-/**
- * Created by baihe on 16/2/29.
- *
- * Kafka数据源,基于Generic类型区分如下类型
- *
- * case 1. 无header的纯文本流
- * case 2. 无header的二进制流
- * case 3. 有header的纯文本流
- * case 4. 有header的二进制流
- */
-object KafkaInlet extends Inlet[(String, Array[Byte])] with Logging {
+class KafkaInlet (context: PlumberContext) extends Inlet[(String, Array[Byte])](context) with Logging {
+
   /**
     * The interface method to *pull* a DStream of specified type from the inlet
     *
     * @return the source DStream
     */
-  override def pull(plumberContext: PlumberContext): DStream[(String, Array[Byte])] = {
-    val plumberConf = plumberContext.plumberConf
+  override def pull(ssc: StreamingContext): DStream[(String, Array[Byte])] = {
+    val plumberConf = context.plumberConf
 
-    val brokers = plumberConf.getString("org.plumber.kafka.brokers")
-    val topics = plumberConf.getString("org.plumber.kafka.topics")
+    val brokers = plumberConf.getString(KafkaInlet.INLET_KAFKA_BROKERS)
+    val topics = plumberConf.getStringList(KafkaInlet.INLET_KAFKA_TOPICS).asScala.toSet
 
-    val topicsSet = topics.split(",").toSet
     val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
 
     KafkaUtils.createDirectStream[String, Array[Byte], StringDecoder, DefaultDecoder](
-        plumberContext, kafkaParams, topicsSet)
+        ssc, kafkaParams, topics)
   }
+}
+
+object KafkaInlet {
+  final val INLET_KAFKA = PlumberConf.INLET + ".kafka"
+
+  final val INLET_KAFKA_BROKERS = INLET_KAFKA + ".brokers"
+  final val INLET_KAFKA_TOPICS = INLET_KAFKA + ".topics"
 }

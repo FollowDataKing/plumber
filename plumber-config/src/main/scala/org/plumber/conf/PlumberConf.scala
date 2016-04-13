@@ -65,5 +65,13 @@ object PlumberConf {
    * @return the converted inner typesafe config object
    */
   implicit def PlumberConf2TypeSafe(plumberConf: PlumberConf) = plumberConf.plumberConf
+
+  final val ROOT: String = "plumber"
+
+  final val INLET: String = ROOT + ".inlet"
+  final val INLET_CLASS: String = INLET + ".class"
+
+  final val OUTLET: String = ROOT + ".outlet"
+  final val OUTLET_CLASS: String = OUTLET + ".class"
 }
 
