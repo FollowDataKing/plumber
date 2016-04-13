@@ -1,18 +1,22 @@
-package org.plumber.api
+package org.plumber.builtins
 
 import com.typesafe.config.Config
+import org.apache.spark.Logging
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.dstream.DStream
+import org.plumber.api.Outlet
 
 /**
- * Created by baihe on 16/4/11.
+ * Created by baihe on 16/4/13.
  */
-abstract class Outlet[T](conf: Config) {
+class ConsoleOutlet (conf: Config) extends Outlet[Any](conf) with Logging {
   /**
    * The interface method to *push* a DStream of specified type to the outlet
    *
    * @param ssc the Spark StreamingContext
    * @param dStream the output stream
    */
-  def push(ssc: StreamingContext, dStream: DStream[T]) : Unit
+  override def push(ssc: StreamingContext, dStream: DStream[Any]): Unit = {
+    dStream.print()
+  }
 }

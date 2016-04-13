@@ -32,10 +32,10 @@ object Dependencies {
     sparkStreaming % Provided,
     sparkHive % Provided,
     sparkTwitter % Provided,
-    sparkKafka
+    sparkKafka % Provided
   )
 
   var plumberDependencies = Seq(
-    tsConfig
+    sparkStreaming % Provided
   )
 }

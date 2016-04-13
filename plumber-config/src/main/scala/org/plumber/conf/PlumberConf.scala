@@ -68,10 +68,11 @@ object PlumberConf {
 
   final val ROOT: String = "plumber"
 
-  final val INLET: String = ROOT + ".inlet"
-  final val INLET_CLASS: String = INLET + ".class"
+  final val CONF_SPARK: String = ROOT + ".spark"
 
-  final val OUTLET: String = ROOT + ".outlet"
-  final val OUTLET_CLASS: String = OUTLET + ".class"
+  final val CONF_TRUNK: String = ROOT + ".trunk"
+
+  final val CONF_BRANCHES: String = ROOT + ".branches"
+
 }
 
