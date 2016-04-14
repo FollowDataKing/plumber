@@ -30,3 +30,5 @@ project/plugins/project/
 
 .idea/
 
+**/twitter4j.properties
+
