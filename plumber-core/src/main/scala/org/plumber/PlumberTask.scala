@@ -22,10 +22,10 @@ object PlumberTask extends Logging {
     val trunkConf = conf.getConfig(PlumberConf.CONF_TRUNK)
 
     val inlet = getInlet(trunkConf.getConfig("inlet"))
-    val rectifier = getExtractor(trunkConf.getConfig("rectifier"))
+    val extractor = getExtractor(trunkConf.getConfig("extractor"))
     val valves = trunkConf.getConfigList("valves").asScala.toIterable.map(getValve)
 
-    Trunk(inlet, rectifier, valves)
+    Trunk(inlet, extractor, valves)
   }
 
   /**
@@ -44,10 +44,10 @@ object PlumberTask extends Logging {
    */
   private def assembleBranch(conf: Config) = {
     val outlet = getOutlet(conf.getConfig("outlet"))
-    val deRectifier = getPublisher(conf.getConfig("derectifier"))
+    val publisher = getPublisher(conf.getConfig("publisher"))
     val valves = conf.getConfigList("valves").asScala.toIterable.map(getValve)
 
-    Branch(valves, deRectifier, outlet)
+    Branch(valves, publisher, outlet)
   }
 
   private def getInlet(conf: Config) : Inlet[Any] = {

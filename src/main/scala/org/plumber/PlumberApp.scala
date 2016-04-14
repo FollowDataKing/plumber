@@ -63,7 +63,7 @@ object PlumberApp {
     val sourceStream: DStream[Any] = trunk.inlet.pull(ssc)
 
     // 2. Trunk stream flows through all the valves in trunk
-    var trunkStream: DStream[_] = trunk.rectifier.transform(sourceStream)
+    var trunkStream: DStream[_] = trunk.extractor.transform(sourceStream)
     for (valve <- trunk.valves) {
       trunkStream = valve.convert(trunkStream)
     }
@@ -80,7 +80,7 @@ object PlumberApp {
         branchStream = valve.convert(branchStream)
       }
 
-      val toPushStream = branch.deRectifier.transform(branchStream)
+      val toPushStream = branch.publisher.transform(branchStream)
 
       branch.outlet.push(ssc, toPushStream)
     }
