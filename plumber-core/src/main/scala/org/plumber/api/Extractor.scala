@@ -6,7 +6,7 @@ import org.apache.spark.streaming.dstream.DStream
 /**
  * Created by baihe on 16/4/13.
  */
-abstract class DeRectifier[T](conf: Config) {
+abstract class Extractor[S](conf: Config) {
 
-  def transform(stream: DStream[Map[String, Any]]): DStream[T]
+  def transform(stream: DStream[S]): DStream[_]
 }

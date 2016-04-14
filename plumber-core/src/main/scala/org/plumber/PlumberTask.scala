@@ -22,7 +22,7 @@ object PlumberTask extends Logging {
     val trunkConf = conf.getConfig(PlumberConf.CONF_TRUNK)
 
     val inlet = getInlet(trunkConf.getConfig("inlet"))
-    val rectifier = getRectifier(trunkConf.getConfig("rectifier"))
+    val rectifier = getExtractor(trunkConf.getConfig("rectifier"))
     val valves = trunkConf.getConfigList("valves").asScala.toIterable.map(getValve)
 
     Trunk(inlet, rectifier, valves)
@@ -44,7 +44,7 @@ object PlumberTask extends Logging {
    */
   private def assembleBranch(conf: Config) = {
     val outlet = getOutlet(conf.getConfig("outlet"))
-    val deRectifier = getDeRectifier(conf.getConfig("derectifier"))
+    val deRectifier = getPublisher(conf.getConfig("derectifier"))
     val valves = conf.getConfigList("valves").asScala.toIterable.map(getValve)
 
     Branch(valves, deRectifier, outlet)
@@ -57,10 +57,10 @@ object PlumberTask extends Logging {
     inletInst
   }
 
-  private def getRectifier(conf: Config) : Rectifier[Any] = {
+  private def getExtractor(conf: Config) : Extractor[Any] = {
     val rectClass = conf.getString("class")
     val rectInst = Class.forName(rectClass).getConstructor(classOf[Config]).newInstance(conf)
-      .asInstanceOf[Rectifier[Any]]
+      .asInstanceOf[Extractor[Any]]
     rectInst
   }
 
@@ -71,10 +71,10 @@ object PlumberTask extends Logging {
     valveInst
   }
 
-  private def getDeRectifier(conf: Config) : DeRectifier[Any] = {
+  private def getPublisher(conf: Config) : Publisher[Any] = {
     val derectClass = conf.getString("class")
     val derectInst = Class.forName(derectClass).getConstructor(classOf[Config]).newInstance(conf)
-      .asInstanceOf[DeRectifier[Any]]
+      .asInstanceOf[Publisher[Any]]
     derectInst
   }
 
