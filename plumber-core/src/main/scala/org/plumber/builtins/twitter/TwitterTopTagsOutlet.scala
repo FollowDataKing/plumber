@@ -9,8 +9,6 @@ import org.plumber.api.Outlet
   * Created by baihe on 16/4/14.
   */
 class TwitterTopTagsOutlet(conf: Config) extends Outlet[Any](conf) {
-  val checkDuration = conf.getInt("duration")
-
   /**
     * The interface method to *push* a DStream of specified type to the outlet
     *
@@ -18,14 +16,14 @@ class TwitterTopTagsOutlet(conf: Config) extends Outlet[Any](conf) {
     * @param dStream the output stream
     */
   override def push(ssc: StreamingContext, dStream: DStream[Any]): Unit = {
+    val checkDuration: Int = conf.getInt("duration")
     val topTags = dStream.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(checkDuration))
       .map{case (topic, count) => (count, topic)}
       .transform(_.sortByKey(false))
 
-    // Print popular hashtags
     topTags.foreachRDD(rdd => {
       val topList = rdd.take(5)
-      println((s"\nPopular topics in last $checkDuration seconds (%s total):").format(rdd.count()))
+      println("\nPopular topics in last %s seconds (%s total):".format(checkDuration, rdd.count()))
       topList.foreach{case (count, tag) => println("%s (%s tweets)".format(tag, count))}
     })
   }
