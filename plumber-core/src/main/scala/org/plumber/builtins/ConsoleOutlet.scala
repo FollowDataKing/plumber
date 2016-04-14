@@ -10,6 +10,7 @@ import org.plumber.api.Outlet
  * Created by baihe on 16/4/13.
  */
 class ConsoleOutlet (conf: Config) extends Outlet[Any](conf) with Logging {
+
   /**
    * The interface method to *push* a DStream of specified type to the outlet
    *
