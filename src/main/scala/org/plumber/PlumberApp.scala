@@ -14,14 +14,14 @@ object PlumberApp {
   def main(args: Array[String]): Unit = {
     val CONF_ARG = 0
 
-    if (args.length == 0) {
+    val conf = if (args.length > 0) {
+      val confPath = args(CONF_ARG)
+      PlumberConf.init().load(confPath)
+    } else {
       println("PlumberApp <config_path>")
-      return
+      println("Missing the parameter <config_path>, use the default config ...")
+      PlumberConf.init()
     }
-
-    val confPath = args(CONF_ARG)
-
-    val conf = PlumberConf.init().load(confPath)
 
     val taskName = conf.getString("plumber.name")
 
@@ -54,8 +54,8 @@ object PlumberApp {
     ssc.checkpoint(checkpoint)
 
     // 0. At first the plumber assemble the pipework, including the trunk and all the branches
-    val trunk = TaskRun.assembleTrunk(conf)
-    val branches = TaskRun.assembleBranches(conf)
+    val trunk = PlumberTask.assembleTrunk(conf)
+    val branches = PlumberTask.assembleBranches(conf)
 
     // Then let it flow ...
 

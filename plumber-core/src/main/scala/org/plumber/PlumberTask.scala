@@ -11,7 +11,7 @@ import scala.collection.JavaConverters._
 /**
  * Created by baihe on 16/4/12.
  */
-object TaskRun extends Logging {
+object PlumberTask extends Logging {
 
   /**
    * Assemble the trunk pipe
@@ -44,7 +44,7 @@ object TaskRun extends Logging {
    */
   private def assembleBranch(conf: Config) = {
     val outlet = getOutlet(conf.getConfig("outlet"))
-    val deRectifier = getDeRectifier(conf)
+    val deRectifier = getDeRectifier(conf.getConfig("derectifier"))
     val valves = conf.getConfigList("valves").asScala.toIterable.map(getValve)
 
     Branch(valves, deRectifier, outlet)

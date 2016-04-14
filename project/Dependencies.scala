@@ -31,7 +31,7 @@ object Dependencies {
   val coreDependencies = Seq(
     sparkStreaming % Provided,
     sparkHive % Provided,
-    sparkTwitter % Provided,
+    sparkTwitter,
     sparkKafka % Provided
   )
 
