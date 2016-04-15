@@ -10,6 +10,8 @@ import org.plumber.api.Inlet
 
 import scala.collection.JavaConverters._
 
+import scala.reflect.runtime.universe._
+
 /**
  * Created by baihe on 16/4/12.
  */
@@ -20,15 +22,52 @@ class KafkaInlet (conf: Config) extends Inlet[(String, Array[Byte])](conf) with 
     *
     * @return the source DStream
     */
-  override def pull(ssc: StreamingContext): DStream[(String, Array[Byte])] = {
-    val brokers = conf.getString(KafkaInlet.CONF_KAFKA_BROKERS)
-    val topics = conf.getStringList(KafkaInlet.CONF_KAFKA_TOPICS).asScala.toSet
+//  override def pull(ssc: StreamingContext): DStream[(String, Array[Byte])] = {
+//    val brokers = conf.getString(KafkaInlet.CONF_KAFKA_BROKERS)
+//    val topics = conf.getStringList(KafkaInlet.CONF_KAFKA_TOPICS).asScala.toSet
+//
+//    val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
+//
+//    KafkaUtils.createDirectStream[String, Array[Byte], StringDecoder, DefaultDecoder](
+//        ssc, kafkaParams, topics)
+//  }
 
-    val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
+  override def pull(ssc: StreamingContext): DStream[(String, Array[Byte])] = pullWithType[(String, Array[Byte])](ssc)
 
-    KafkaUtils.createDirectStream[String, Array[Byte], StringDecoder, DefaultDecoder](
-        ssc, kafkaParams, topics)
-  }
+  def pullWithType[S](ssc: StreamingContext)(implicit st: TypeTag[S]) : DStream[S] = {
+
+      val brokers = conf.getString(KafkaInlet.CONF_KAFKA_BROKERS)
+      val topics = conf.getStringList(KafkaInlet.CONF_KAFKA_TOPICS).asScala.toSet
+
+      val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
+
+      typeOf[S] match {
+        // case 1. 无header的纯文本流
+        case t if t =:= typeOf[String] =>
+          logDebug("Kafka source containing *headless string* stream")
+          KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
+            ssc, kafkaParams, topics).map(_._2)
+        // case 2. 无header的二进制流
+        case t if t =:= typeOf[Array[Byte]] =>
+          logDebug("Kafka source containing *headless byte-array* stream")
+          KafkaUtils.createDirectStream[String, Array[Byte], StringDecoder, DefaultDecoder](
+            ssc, kafkaParams, topics).map(_._2)
+        // case 3. 有header的纯文本流
+        case t if t =:= typeOf[(String, String)] =>
+          logDebug("Kafka source containing *with-head string* stream")
+          KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
+            ssc, kafkaParams, topics)
+        // case 4. 有header的二进制流
+        case t if t =:= typeOf[(String, Array[Byte])] =>
+          logDebug("Kafka source containing *with-head byte-array* stream")
+          KafkaUtils.createDirectStream[String, Array[Byte], StringDecoder, DefaultDecoder](
+            ssc, kafkaParams, topics)
+        case _ => {
+          logError("Kafka source containing *non-supported* stream")
+          throw new UnsupportedOperationException
+        }
+      }
+    }.asInstanceOf[DStream[S]]
 }
 
 object KafkaInlet {
