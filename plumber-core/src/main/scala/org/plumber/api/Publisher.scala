@@ -8,5 +8,6 @@ import org.apache.spark.streaming.dstream.DStream
  */
 abstract class Publisher[T](conf: Config) {
 
-  def transform(stream: DStream[_]): DStream[T]
+  def transform(stream: DStream[Drip[_]]): DStream[T]
+//  def transform(stream: DStream[Drip]): DStream[T]
 }

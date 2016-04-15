@@ -63,17 +63,17 @@ object PlumberApp {
     val sourceStream: DStream[Any] = trunk.inlet.pull(ssc)
 
     // 2. Trunk stream flows through all the valves in trunk
-    var trunkStream: DStream[_] = trunk.extractor.transform(sourceStream)
+    var trunkStream = trunk.extractor.transform(sourceStream)
     for (valve <- trunk.valves) {
       trunkStream = valve.convert(trunkStream)
     }
 
-    val toForkStream: DStream[_]  = trunkStream
+    val toForkStream  = trunkStream
 
     // 3. Fork the trunk stream to different branches
     for (branch <- branches) {
 
-      var branchStream: DStream[_] = toForkStream
+      var branchStream = toForkStream
 
       // 3.1. Branch stream flows through all the valves in this branch
       for (valve <- branch.valves) {

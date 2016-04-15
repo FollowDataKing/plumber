@@ -8,5 +8,6 @@ import org.apache.spark.streaming.dstream.DStream
  */
 abstract class Extractor[S](conf: Config) {
 
-  def transform(stream: DStream[S]): DStream[_]
+  def transform(stream: DStream[S]): DStream[Drip[_]]
+//  def transform(stream: DStream[S]): DStream[Drip]
 }
