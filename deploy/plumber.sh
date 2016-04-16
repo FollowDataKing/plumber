@@ -71,4 +71,4 @@ echo "Using the spark master: $MASTER"
 echo "Using the plumber task: $TASK"
 
 echo "${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar"
-`${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ../libs/plumber-assembly-${PLUMBER_VERSION}.jar`
+${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar
