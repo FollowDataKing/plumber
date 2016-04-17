@@ -9,7 +9,7 @@ import org.plumber.api.{Drip, Outlet}
 /**
  * Created by baihe on 16/4/15.
  */
-class AccessStatsOutlet(conf: Config) extends Outlet[Drip[_]](conf){
+class AccessStatsOutlet(conf: Config) extends Outlet[Drip](conf){
   /**
    * The interface method to *push* a DStream of specified type to the outlet
    *
@@ -19,7 +19,7 @@ class AccessStatsOutlet(conf: Config) extends Outlet[Drip[_]](conf){
 //  override def push(ssc: StreamingContext, dStream: DStream[_$1]): Unit = ???
 
   // the target stream consumer function
-  override def push(ssc: StreamingContext, dStream: DStream[Drip[_]]) = {
+  override def push(ssc: StreamingContext, dStream: DStream[Drip]) = {
 
     // PV stats identified by action/param/user
     val apuPVs: DStream[(String, Int)] =
