@@ -70,5 +70,11 @@ echo "Found the spark home [$SPARK_HOME]"
 echo "Using the spark master: $MASTER"
 echo "Using the plumber task: $TASK"
 
-echo "${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar"
-${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar
+if [ -z $TASK ]; then
+    echo "${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar"
+    ${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar
+else
+    echo "${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar $TASK"
+    ${SPARK_HOME}/bin/spark-submit --master ${MASTER} --class org.plumber.PlumberApp ./plumber-assembly-${PLUMBER_VERSION}.jar $TASK
+fi
+
